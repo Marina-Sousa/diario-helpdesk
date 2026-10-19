@@ -9,4 +9,4 @@ Registro dos problemas técnicos que investiguei e resolvi durante meus estudos 
 
 | Nº | Problema | Área | Resolvido? |
 |----|----------|------|-----------|
-| 001 | [Disco do Linux quase cheio](chamados/001-disco-cheio.md) | Linux / Armazenamento | Sim |
+| 001 | [Disco do Linux quase cheio](chamados/001-disco-cheio.md) | Linux / Armazenamento | Em Andamento |
