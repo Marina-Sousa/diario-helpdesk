@@ -14,6 +14,7 @@ O Linux do Chromebook está com pouco espaço livre, o que pode atrapalhar insta
 |---|---|---|
 | `df -h` | Mostra o espaço de cada disco ou partição | `df` = disk free; `-h` = tamanhos legíveis (GB, MB) |
 | `du -sh ~/.[!.]* ~/* 2>/dev/null \| sort -h` | Mostra o tamanho de cada pasta da home, da menor para a maior | `du` = uso de disco; `-s` = só o total; `-h` = legível; `~` = pasta pessoal; `\|` = passa o resultado para o `sort`; `sort -h` = ordena por tamanho |
+| `du -sh ~/.vscode/* ~/.config/* 2>/dev/null \| sort -h \| tail -n 10` | Mostra o tamanho do conteúdo de duas pastas, só os 10 maiores | `~/.vscode/*` = itens dentro da pasta; `tail -n 10` = últimas 10 linhas (as maiores) |
 
 ## Passo 1: visão geral do disco (`df -h`)
 
@@ -61,7 +62,24 @@ $ du -sh ~/.[!.]* ~/* 2>/dev/null | sort -h
 **Plano atualizado:** passo 3 (por dentro de `.vscode` e `.config`), passo 4 (`node_modules`), passo 5 (fora da home), passo 6 (caches).
 
 ## Passo 3: por dentro de `.vscode` e `.config`
-(preencher)
+
+```text
+$ du -sh ~/.vscode/* ~/.config/* 2>/dev/null | sort -h | tail -n 10
+(saída resumida, apenas as maiores entradas)
+232M    ~/.config/nvm
+752M    ~/.config/Code
+1.4G    ~/.vscode/extensions
+```
+
+| Pasta | Tamanho | O que parece ser |
+|---|---|---|
+| `~/.vscode/extensions` | 1,4 GB | Extensões instaladas no VS Code |
+| `~/.config/Code` | 752 MB | Dados do VS Code (caches e workspaces), a detalhar |
+| `~/.config/nvm` | 232 MB | NVM e as versões do Node (não apagar) |
+
+**Leitura:** as extensões do VS Code são o maior item da home, ocupando mais do que todos os meus projetos juntos. Hipóteses a verificar: uma ou duas extensões muito grandes, ou várias versões da mesma extensão acumuladas.
+
+**Próximo passo:** olhar por dentro de `extensions` e de `Code`.
 
 ## Passo 4: pastas `node_modules`
 (preencher)
