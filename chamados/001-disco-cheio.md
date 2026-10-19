@@ -1,24 +1,89 @@
-# Chamado 001: Disco do Linux quase cheio
+# Chamado 001: Disco do Linux com uso elevado
 
 **Data:** 18/10/2026
 **Área:** Linux / Armazenamento
+**Ambiente:** Chromebook, Linux (Debian) via Crostini
+**Status:** Em andamento
 
 ## Sintoma
-O que eu percebi: [ex.: o Linux do Chromebook está consumindo muito espaço]
+O Linux do Chromebook está com pouco espaço livre, o que pode atrapalhar instalações e projetos.
 
-## O que investiguei (em ordem)
-1. Comando `df -h`: [o que vi: tamanho total, usado, disponível]
-2. Comando `du -sh ...`: [quais pastas eram as maiores]
-3. [outros passos]
+## Comandos utilizados
+
+| Comando | Para que serve | Partes importantes |
+|---|---|---|
+| `df -h` | Mostra o espaço de cada disco ou partição | `df` = disk free; `-h` = tamanhos legíveis (GB, MB) |
+| `du -sh ~/.[!.]* ~/* 2>/dev/null \| sort -h` | Mostra o tamanho de cada pasta da home, da menor para a maior | `du` = uso de disco; `-s` = só o total; `-h` = legível; `~` = pasta pessoal; `\|` = passa o resultado para o `sort`; `sort -h` = ordena por tamanho |
+
+## Passo 1: visão geral do disco (`df -h`)
+
+```text
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vdc         11G  8.9G  2.0G  82% /
+(demais linhas omitidas)
+```
+
+| Item | Valor |
+|---|---|
+| Tamanho total | 11 GB |
+| Usado | 8,9 GB |
+| Livre | 2,0 GB |
+| Uso | 82% |
+
+**Leitura:** ainda há 2 GB livres, então não é uma emergência, mas convém investigar antes de chegar perto de 90%, quando instalações começam a falhar.
+
+**Linhas ignoradas e por quê:** `tmpfs` e `devtmpfs` ficam na memória; `cros-containers` e `fonts/chromeos` parecem ser partes do ChromeOS, fora do meu controle.
+
+## Passo 2: maiores pastas da home (`du`)
+
+```text
+$ du -sh ~/.[!.]* ~/* 2>/dev/null | sort -h
+(saída resumida, apenas as maiores entradas)
+97M     ~/.local
+128M    ~/.cache
+261M    ~/Meus_Projetos
+287M    ~/Full-Stack developing
+337M    ~/.npm
+983M    ~/.config
+1.4G    ~/.vscode
+```
+
+| Pasta | Tamanho | Hipótese |
+|---|---|---|
+| `.vscode` | 1,4 GB | Dados e extensões do VS Code (a verificar) |
+| `.config` | 983 MB | Configurações de aplicativos (a verificar) |
+| `.npm` | 337 MB | Cache do npm |
+| `Full-Stack developing` | 287 MB | Projeto, possivelmente com `node_modules` |
+| `Meus_Projetos` | 261 MB | Idem |
+
+**Observação importante:** a soma da home é de cerca de 3,4 GB, mas o `df -h` mostrou 8,9 GB usados. Portanto, cerca de 5,5 GB estão **fora da home**, e preciso investigar o sistema também (passo 5).
+
+**Plano atualizado:** passo 3 (por dentro de `.vscode` e `.config`), passo 4 (`node_modules`), passo 5 (fora da home), passo 6 (caches).
+
+## Passo 3: por dentro de `.vscode` e `.config`
+(preencher)
+
+## Passo 4: pastas `node_modules`
+(preencher)
+
+## Passo 5: espaço fora da home
+(preencher)
+
+## Passo 6: caches (`apt` e `npm`)
+(preencher)
 
 ## Causa encontrada
-[O que estava ocupando mais espaço]
+(preencher)
 
 ## Solução aplicada
-[O que fiz, ou "apenas investiguei, sem apagar nada"]
+(preencher)
 
 ## Resultado
-Antes: [uso em %] | Depois: [uso em %]
+
+| | Antes | Depois |
+|---|---|---|
+| Uso de `/` | 82% | (preencher) |
+| Espaço livre | 2,0 GB | (preencher) |
 
 ## O que aprendi
-[1 ou 2 frases com suas palavras]
+(escrever com suas palavras)
